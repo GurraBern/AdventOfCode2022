@@ -7,14 +7,18 @@ import java.util.Scanner;
 
 public class Day1 {
     public static void main(String[] args) throws FileNotFoundException {
+        var startTime = System.nanoTime();
+
         File myObj = new File("src/main/inputDay1.txt");
-
-       List<Integer> sortedList = countCal(myObj);
-
+        List<Integer> sortedList = countCal(myObj);
         int highest = getTotal(sortedList, 1);
         int topThree = getTotal(sortedList, 3);
-    }
 
+        var endTime = System.nanoTime();
+        var totalRunningTime = (endTime-startTime)/Math.pow(10,9);
+        System.out.println(totalRunningTime);
+    }
+//0.0661089
     private static List<Integer> countCal(File myObj) throws FileNotFoundException {
         Scanner myReader = new Scanner(myObj);
         List<Integer> elves = new ArrayList<>();
@@ -28,7 +32,6 @@ public class Day1 {
                 val += Integer.parseInt(data);
             }
         }
-
         Collections.sort(elves);
         return elves;
     }
@@ -38,8 +41,6 @@ public class Day1 {
         for (int i = 1; i<=elemCount; i++){
             total += sortedList.get(sortedList.size()-i);
         }
-
         return total;
     }
-
 }
