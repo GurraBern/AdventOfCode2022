@@ -10,6 +10,10 @@ public class Day3 {
         HashMap<Character, Integer> resultMap = new HashMap<>();
         String resultLetters = "";
 
+        List<Character> res = new ArrayList<>();
+        List<Character> finalRes = new ArrayList<>();
+
+        List<List<Character>> charList = new ArrayList<>();
         int i = 0;
         List<String> groupStrings = new ArrayList<>();
         while (myReader.hasNextLine()) {
@@ -20,51 +24,49 @@ public class Day3 {
             var secondCompartments = compartments[1].toCharArray();
 
             //Part 1
-            for (var letter : secondCompartments) {
+            /*for (var letter : secondCompartments) {
                 if (firstCompartments.indexOf(letter) >= 0) {
                     resultLetters += letter;
                     break;
                 }
-            }
-
-
-            Map<Character, Integer> numValues = new HashMap<>();
-
-
+            }*/
 
             //Part 2
-            groupStrings.add(inputString);
-            if(i < 3){
-                //cmp all 3 strings
-                HashSet<Character> chars = new HashSet<>();
-                for (var groupStr: groupStrings) {
-                    var t = groupStr.toCharArray();
-                    for (var b : t) {
-                        chars.add(b);
-                    }
-                }
-
-                var uniqueChars = chars.stream().toList();
-                chars.retainAll(uniqueChars);
-
-                //for each array we run retainAll
-                var letterValues = numerize("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-                int sum = 0;
-                for (var resLetter : chars) {
-                    int t = letterValues.get(resLetter);
-                    sum += t;
-                }
-var b = sum;
-                //do something
-                //groupStrings.clear();
+            List<Character> tempList = new ArrayList<>();
+            for (var t : inputString.toCharArray()){
+                tempList.add(t);
             }
+            charList.add(tempList);
+
 
             i++;
+            Set<Character> test = new HashSet<>();
+
+            if(i >= 3){
+                var bb = charList.get(0);
+                for(int j = 1; j < charList.size(); j++){
+                    bb.retainAll(charList.get(j));
+                }
+
+                for (var item : bb){
+                    test.add(item);
+                }
+
+                for (var item : test){
+                    finalRes.add(item);
+                }
+
+                i=0;
+                charList.clear();
+            }
         }
+
+
+
 
         var letterValues = numerize("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
         int sum = 0;
-        for (var resLetter : groupStrings) {
+        for (var resLetter : finalRes) {
             int t = letterValues.get(resLetter);
             sum += t;
         }
