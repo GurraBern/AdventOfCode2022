@@ -19,6 +19,7 @@ public class Day2 {
             int oppMove = playerHand[0];
             int myMove = playerHand[1];
 
+
             //Should lose
             if(myMove == 1){
                 if (oppMove == 1){
@@ -63,7 +64,7 @@ public class Day2 {
                 myScore += myMove + 3;
                 oppScore += oppMove + 3;
             //Rock -- Paper
-            } else if(oppMove == 2 && myMove == 2){
+            } else if(oppMove == myMove){
                 oppScore += oppMove + 3;
                 myScore += myMove + 3;
             } else if(oppMove == 2 && myMove == 1){
