@@ -9,29 +9,70 @@ public class Day3 {
 
         HashMap<Character, Integer> resultMap = new HashMap<>();
         String resultLetters = "";
+
+        int i = 0;
+        List<String> groupStrings = new ArrayList<>();
         while (myReader.hasNextLine()) {
             var inputString = myReader.nextLine();
-
             int mid = inputString.length() / 2; //get the middle of the String
-            String[] parts = {inputString.substring(0, mid), inputString.substring(mid)};
-            String part1 = parts[0];
-            var part2 = parts[1].toCharArray();
+            String[] compartments = {inputString.substring(0, mid), inputString.substring(mid)};
+            String firstCompartments = compartments[0];
+            var secondCompartments = compartments[1].toCharArray();
 
-            for (var letter : part2) {
-                if (part1.indexOf(letter) >= 0) {
+            //Part 1
+            for (var letter : secondCompartments) {
+                if (firstCompartments.indexOf(letter) >= 0) {
                     resultLetters += letter;
                     break;
                 }
             }
+
+
+            Map<Character, Integer> numValues = new HashMap<>();
+
+
+
+            //Part 2
+            groupStrings.add(inputString);
+            if(i < 3){
+                //cmp all 3 strings
+                HashSet<Character> chars = new HashSet<>();
+                for (var groupStr: groupStrings) {
+                    var t = groupStr.toCharArray();
+                    for (var b : t) {
+                        chars.add(b);
+                    }
+                }
+
+                var uniqueChars = chars.stream().toList();
+                chars.retainAll(uniqueChars);
+
+                //for each array we run retainAll
+                var letterValues = numerize("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                int sum = 0;
+                for (var resLetter : chars) {
+                    int t = letterValues.get(resLetter);
+                    sum += t;
+                }
+var b = sum;
+                //do something
+                //groupStrings.clear();
+            }
+
+            i++;
         }
 
         var letterValues = numerize("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-
         int sum = 0;
-        for (var resLetter : resultLetters.toCharArray()) {
+        for (var resLetter : groupStrings) {
             int t = letterValues.get(resLetter);
             sum += t;
         }
+
+        /*for (var resLetter : resultLetters.toCharArray()) {
+            int t = letterValues.get(resLetter);
+            sum += t;
+        }*/
 
         System.out.println(sum);
     }
