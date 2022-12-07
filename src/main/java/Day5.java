@@ -32,11 +32,12 @@ public class Day5 {
             }
         }
 
-        List<List<String>> columns = new ArrayList<>();
-        for (int i = 0; i < boxes.size(); i++){
-            List<String> col = new ArrayList<>();
+        List<Stack<String>> columns = new ArrayList<>();
+        for (int i = 0; i <= boxes.size(); i++){
+            Stack<String> col = new Stack<>();
             for (int j = 0; j < boxes.size(); j++){
                 if(boxes.get(j).size() > i && !boxes.get(j).get(i).contains("  ")){
+                    var remove = boxes.get(j).get(i);
                     col.add(boxes.get(j).get(i));
                 }
             }
@@ -47,26 +48,25 @@ public class Day5 {
             columns = moveCreate(cmd, columns);
         }
 
-        var test = "works?";
     }
 
-    private static List<List<String>> moveCreate(String command, List<List<String>> columns){
+    private static List<Stack<String>> moveCreate(String command, List<Stack<String>> columns){
         var str = command.replaceAll("\\D+", " ").trim().split(" ");
         int[] cmdValues = Arrays.stream(str)
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        int to = cmdValues[0]-1; //Move element
+        int numElem = cmdValues[0]; //Move element
         int from = cmdValues[1]-1; //From element
-        //int to = cmdValues[2]; //To element
+        int to = cmdValues[2]-1; //From element
 
-        var topIndex = columns.get(from).size()-1;
-        var temp = columns.get(from).get(topIndex);
-        columns.remove(from);
-        columns.get(to).add(temp);
-
-
+        for (int i = 0; i < numElem; i++){
+            var temp = columns.get(from).remove(0);
+            columns.get(to).add(0, temp);
+        }
 
         return columns;
     }
+
+    //Doesnt Work RBLMGVMS
 }
