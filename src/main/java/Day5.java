@@ -5,44 +5,36 @@ import java.util.regex.Pattern;
 
 public class Day5 {
     public static void main(String[] args) throws FileNotFoundException {
-        File myObj = new File("src/main/inputDay5.txt");
-        Scanner myReader = new Scanner(myObj);
+        Scanner myReader = new Scanner(new File("src/main/inputDay5.txt"));
 
-        Pattern pattern = Pattern.compile(".*\\d.*");
         List<List<String>> boxes = new ArrayList<>();
         List<String> commands = new ArrayList<>();
-
-        /*boolean isNum = false;
+        boolean isCommand = false;
         while (myReader.hasNextLine()) {
-            List<String> row = new ArrayList<>();
-            var inputString = myReader.nextLine();
-            var rowStrings = inputString.split("(?<=\\G.{" + 4 + "})");
+            var line = myReader.nextLine();
 
-            for (var rowStr : rowStrings){
-                if(pattern.matcher(rowStr).matches()){
-                    isNum = true;
+            if(!isCommand && Character.isDigit(line.charAt(1))){
+                isCommand = true;
+            } else if (isCommand) {
+                if(!line.isEmpty()){
+                    commands.add(line);
                 }
-                row.add(rowStr);
-            }
-            if(!isNum){
-                boxes.add(row);
             } else {
-                if(inputString.contains("m")){
-                    commands.add(inputString);
-                }
+                var boxRow = line.split("(?<=\\G.{" + 4 + "})");
+                List<String> row = List.of(boxRow);
+                boxes.add(row);
             }
-        }*/
+        }
 
-        List<Stack<String>> columns = toStacks(boxes);
-        executeCommands(columns, commands);
-        String res = listTopBoxes(columns);
-
-        System.out.println(res);
+        var result1 = part1(boxes, commands).replaceAll("[\\[\\] ]", "");
+        var result2 = part2(boxes, commands).replaceAll("[\\[\\] ]", "");
+        System.out.println("Solution 1: "+ result1);
+        System.out.println("Solution 2: "+ result2);
     }
 
-    private static void executeCommands(List<Stack<String>> columns, List<String> commands){
+    private static void executeCommands(List<Stack<String>> columns, List<String> commands, boolean moveMultiple){
         for (var cmd : commands){
-            moveCreate(cmd, columns);
+            moveCreate(cmd, columns, moveMultiple);
         }
     }
 
@@ -57,6 +49,7 @@ public class Day5 {
             }
             columns.add(stack);
         }
+
         return columns;
     }
 
@@ -67,10 +60,11 @@ public class Day5 {
                 result.append(col.get(0));;
             }
         }
+
         return result.toString();
     }
 
-    private static void moveCreate(String command, List<Stack<String>> columns){
+    private static void moveCreate(String command, List<Stack<String>> columns, boolean moveMultiple){
         var str = command.replaceAll("\\D+", " ").trim().split(" ");
         int[] cmdValues = Arrays.stream(str)
                 .mapToInt(Integer::parseInt)
@@ -80,22 +74,34 @@ public class Day5 {
         int from = cmdValues[1]-1; //From stack
         int to = cmdValues[2]-1; //To stack
 
-        /*for (int i = 0; i < numElem; i++){
-            var temp = columns.get(from).remove(0);
-            columns.get(to).add(0, temp);
-        }*/
+        if(moveMultiple){
+            List<String> moveBoxes = new ArrayList<>();
+            for(int i = 0; i < numElem; i++){
+                var temp = columns.get(from).remove(0);
+                moveBoxes.add(temp);
+            }
+            Collections.reverse(moveBoxes);
+            for(var item : moveBoxes){
+                columns.get(to).add(0, item);
+            }
 
-        List<String> moveBoxes = new ArrayList<>();
-        for(int i = 0; i < numElem; i++){
-            var temp = columns.get(from).remove(0);
-            moveBoxes.add(temp);
-        }
-
-        //Maybe remove if working with stacks in different way
-        Collections.reverse(moveBoxes);
-        for(var item : moveBoxes){
-            columns.get(to).add(0, item);
+        } else {
+            for (int i = 0; i < numElem; i++){
+                var temp = columns.get(from).remove(0);
+                columns.get(to).add(0, temp);
+            }
         }
     }
 
+    private static String part1(List<List<String>> boxes, List<String> commands){
+        List<Stack<String>> columns = toStacks(boxes);
+        executeCommands(columns, commands, false);
+        return listTopBoxes(columns);
+    }
+
+    private static String part2(List<List<String>> boxes, List<String> commands){
+        List<Stack<String>> columns = toStacks(boxes);
+        executeCommands(columns, commands, true);
+        return listTopBoxes(columns);
+    }
 }
