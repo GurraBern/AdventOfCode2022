@@ -38,31 +38,23 @@ public class Day3 {
             }
             charList.add(tempList);
 
-
             i++;
             Set<Character> test = new HashSet<>();
-
             if(i >= 3){
                 var bb = charList.get(0);
                 for(int j = 1; j < charList.size(); j++){
                     bb.retainAll(charList.get(j));
                 }
-
                 for (var item : bb){
                     test.add(item);
                 }
-
                 for (var item : test){
                     finalRes.add(item);
                 }
-
                 i=0;
                 charList.clear();
             }
         }
-
-
-
 
         var letterValues = numerize("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
         int sum = 0;
@@ -70,11 +62,6 @@ public class Day3 {
             int t = letterValues.get(resLetter);
             sum += t;
         }
-
-        /*for (var resLetter : resultLetters.toCharArray()) {
-            int t = letterValues.get(resLetter);
-            sum += t;
-        }*/
 
         System.out.println(sum);
     }
