@@ -32,31 +32,53 @@ public class Day5 {
             }
         }
 
+        //Remap to stacks
+        List<Stack<String>> columns = new ArrayList<>();
+        /*for (int i = 0; i <= boxes.size(); i++){
+            Stack<String> col = new Stack<>();
+            for (int j = 0; j < boxes.size(); j++){
+                if(boxes.get(j).size() > i && !boxes.get(j).get(i).contains("  ")){
+                    col.add(boxes.get(j).get(i));
+                }
+            }
+            columns.add(col);
+        }*/
+        toStacks(boxes);
+        columns = executeCommands(columns, commands);
+        String res = showTopObjects(columns);
+
+        System.out.println(res);
+    }
+
+    private static List<Stack<String>> executeCommands(List<Stack<String>> columns, List<String> commands){
+        for (var cmd : commands){
+            columns = moveCreate(cmd, columns);
+        }
+        return columns;
+    }
+
+    private static List<Stack<String>> toStacks(List<List<String>> boxes){
         List<Stack<String>> columns = new ArrayList<>();
         for (int i = 0; i <= boxes.size(); i++){
             Stack<String> col = new Stack<>();
             for (int j = 0; j < boxes.size(); j++){
                 if(boxes.get(j).size() > i && !boxes.get(j).get(i).contains("  ")){
-                    var remove = boxes.get(j).get(i);
                     col.add(boxes.get(j).get(i));
                 }
             }
             columns.add(col);
         }
+        return columns;
+    }
 
-        for (var cmd : commands){
-            columns = moveCreate(cmd, columns);
-        }
-
-        String res = "";
+    private static String showTopObjects(List<Stack<String>> columns){
+        String result = "";
         for (var col : columns){
             if(col.size() > 0){
-                var topBox = col.get(0);
-                res += topBox;
+                result += col.get(0);;
             }
         }
-
-        System.out.println(res);
+        return result;
     }
 
     private static List<Stack<String>> moveCreate(String command, List<Stack<String>> columns){
@@ -65,9 +87,9 @@ public class Day5 {
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        int numElem = cmdValues[0]; //Move element
-        int from = cmdValues[1]-1; //From element
-        int to = cmdValues[2]-1; //From element
+        int numElem = cmdValues[0]; //Number of elements to move
+        int from = cmdValues[1]-1; //From stack
+        int to = cmdValues[2]-1; //To stack
 
         /*for (int i = 0; i < numElem; i++){
             var temp = columns.get(from).remove(0);
@@ -80,12 +102,11 @@ public class Day5 {
             moveBoxes.add(temp);
         }
 
+        //Maybe remove if working with stacks in different way
         Collections.reverse(moveBoxes);
-
         for(var item : moveBoxes){
             columns.get(to).add(0, item);
         }
-
 
         return columns;
     }
