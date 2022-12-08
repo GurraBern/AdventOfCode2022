@@ -50,14 +50,13 @@ public class Day5 {
 
         String res = "";
         for (var col : columns){
-            //Fails here
             if(col.size() > 0){
                 var topBox = col.get(0);
                 res += topBox;
             }
         }
 
-        var t = res;
+        System.out.println(res);
     }
 
     private static List<Stack<String>> moveCreate(String command, List<Stack<String>> columns){
