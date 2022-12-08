@@ -48,6 +48,16 @@ public class Day5 {
             columns = moveCreate(cmd, columns);
         }
 
+        String res = "";
+        for (var col : columns){
+            //Fails here
+            if(col.size() > 0){
+                var topBox = col.get(0);
+                res += topBox;
+            }
+        }
+
+        var t = res;
     }
 
     private static List<Stack<String>> moveCreate(String command, List<Stack<String>> columns){
@@ -60,13 +70,25 @@ public class Day5 {
         int from = cmdValues[1]-1; //From element
         int to = cmdValues[2]-1; //From element
 
-        for (int i = 0; i < numElem; i++){
+        /*for (int i = 0; i < numElem; i++){
             var temp = columns.get(from).remove(0);
             columns.get(to).add(0, temp);
+        }*/
+
+        List<String> moveBoxes = new ArrayList<>();
+        for(int i = 0; i < numElem; i++){
+            var temp = columns.get(from).remove(0);
+            moveBoxes.add(temp);
         }
+
+        Collections.reverse(moveBoxes);
+
+        for(var item : moveBoxes){
+            columns.get(to).add(0, item);
+        }
+
 
         return columns;
     }
 
-    //Doesnt Work RBLMGVMS
 }
