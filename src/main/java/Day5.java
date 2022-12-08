@@ -11,7 +11,8 @@ public class Day5 {
         Pattern pattern = Pattern.compile(".*\\d.*");
         List<List<String>> boxes = new ArrayList<>();
         List<String> commands = new ArrayList<>();
-        boolean isNum = false;
+
+        /*boolean isNum = false;
         while (myReader.hasNextLine()) {
             List<String> row = new ArrayList<>();
             var inputString = myReader.nextLine();
@@ -30,58 +31,46 @@ public class Day5 {
                     commands.add(inputString);
                 }
             }
-        }
-
-        //Remap to stacks
-        List<Stack<String>> columns = new ArrayList<>();
-        /*for (int i = 0; i <= boxes.size(); i++){
-            Stack<String> col = new Stack<>();
-            for (int j = 0; j < boxes.size(); j++){
-                if(boxes.get(j).size() > i && !boxes.get(j).get(i).contains("  ")){
-                    col.add(boxes.get(j).get(i));
-                }
-            }
-            columns.add(col);
         }*/
-        toStacks(boxes);
-        columns = executeCommands(columns, commands);
-        String res = showTopObjects(columns);
+
+        List<Stack<String>> columns = toStacks(boxes);
+        executeCommands(columns, commands);
+        String res = listTopBoxes(columns);
 
         System.out.println(res);
     }
 
-    private static List<Stack<String>> executeCommands(List<Stack<String>> columns, List<String> commands){
+    private static void executeCommands(List<Stack<String>> columns, List<String> commands){
         for (var cmd : commands){
-            columns = moveCreate(cmd, columns);
+            moveCreate(cmd, columns);
         }
-        return columns;
     }
 
     private static List<Stack<String>> toStacks(List<List<String>> boxes){
         List<Stack<String>> columns = new ArrayList<>();
         for (int i = 0; i <= boxes.size(); i++){
-            Stack<String> col = new Stack<>();
-            for (int j = 0; j < boxes.size(); j++){
-                if(boxes.get(j).size() > i && !boxes.get(j).get(i).contains("  ")){
-                    col.add(boxes.get(j).get(i));
+            Stack<String> stack = new Stack<>();
+            for (List<String> box : boxes) {
+                if (box.size() > i && !box.get(i).contains("  ")) {
+                    stack.add(box.get(i));
                 }
             }
-            columns.add(col);
+            columns.add(stack);
         }
         return columns;
     }
 
-    private static String showTopObjects(List<Stack<String>> columns){
-        String result = "";
+    private static String listTopBoxes(List<Stack<String>> columns){
+        StringBuilder result = new StringBuilder();
         for (var col : columns){
             if(col.size() > 0){
-                result += col.get(0);;
+                result.append(col.get(0));;
             }
         }
-        return result;
+        return result.toString();
     }
 
-    private static List<Stack<String>> moveCreate(String command, List<Stack<String>> columns){
+    private static void moveCreate(String command, List<Stack<String>> columns){
         var str = command.replaceAll("\\D+", " ").trim().split(" ");
         int[] cmdValues = Arrays.stream(str)
                 .mapToInt(Integer::parseInt)
@@ -107,8 +96,6 @@ public class Day5 {
         for(var item : moveBoxes){
             columns.get(to).add(0, item);
         }
-
-        return columns;
     }
 
 }
