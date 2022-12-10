@@ -1,11 +1,10 @@
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
-public class Day8 {
+public class Test {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner myReader = new Scanner(new File("src/main/inputDay8.txt"));
 
@@ -26,7 +25,7 @@ public class Day8 {
 
 
     private static int checkVisibilityOutside(List<List<Integer>> intList){
-        List<Point> treeCoordinates = new ArrayList<>();
+        Set<Point> treeCoordinates = new HashSet<>();
 
         for (int i = 0; i < intList.size(); i++){
             calcRow(intList, i, treeCoordinates);
@@ -37,7 +36,7 @@ public class Day8 {
         return treeCoordinates.size();
     }
 
-    private static void calcRow(List<List<Integer>> intList, int row, List<Point> treeCoordinates){
+    private static void calcRow(List<List<Integer>> intList, int row, Set<Point> treeCoordinates){
         boolean stopLeft = false;
         boolean stopRight = false;
         int leftPointer = 0;
@@ -74,8 +73,7 @@ public class Day8 {
         }
     }
 
-    private static void calcCol(List<List<Integer>> intList, int row, List<Point>
-            treeCoordinates) {
+    private static void calcCol(List<List<Integer>> intList, int row, Set<Point> treeCoordinates) {
         boolean stopTop = false;
         boolean stopBottom = false;
         int topPointer = 0;
