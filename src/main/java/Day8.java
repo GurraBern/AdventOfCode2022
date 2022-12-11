@@ -16,105 +16,73 @@ public class Day8 {
         }
 
 
-        var t = checkVisibilityOutside(intList);
+        var res1 = checkVisibilityOutside(intList);
 
-
-
-        var b = 5;
     }
 
 
 
     private static int checkVisibilityOutside(List<List<Integer>> intList){
-        List<Point> treeCoordinates = new ArrayList<>();
+        Set<Point> treeCoordinates = new HashSet<>();
 
         for (int i = 0; i < intList.size(); i++){
             calcRow(intList, i, treeCoordinates);
             calcCol(intList, i, treeCoordinates);
         }
 
-        //353 too low
         return treeCoordinates.size();
     }
 
-    private static void calcRow(List<List<Integer>> intList, int row, List<Point> treeCoordinates){
-        boolean stopLeft = false;
-        boolean stopRight = false;
+    private static void calcRow(List<List<Integer>> intList, int row, Set<Point> treeCoordinates){
         int leftPointer = 0;
         int rightPointer = intList.size()-1;
+        int maxValueLeft = -1;
+        int maxValueRight = -1;
+
         while(true){
-            if(!stopLeft){
-                if (leftPointer == 0 || leftPointer+1 == intList.size()){
-                    treeCoordinates.add(new Point(row,leftPointer));
-                } else if(intList.get(row).get(leftPointer) > intList.get(row).get(leftPointer+1)){
-                    treeCoordinates.add(new Point(row,leftPointer));
-                } else {
-                    stopLeft = true;
+            if(leftPointer < intList.size()){
+                int treeValue = intList.get(row).get(leftPointer);
+                if(treeValue > maxValueLeft){
+                    treeCoordinates.add(new Point(leftPointer, row));
+                    maxValueLeft = treeValue;
                 }
-            }
-
-            if(!stopRight){
-                if (rightPointer == 0 || rightPointer+1 == intList.size()){
-                    treeCoordinates.add(new Point(row,rightPointer));
-                } else if(intList.get(row).get(rightPointer) > intList.get(row).get(rightPointer+1)){
-                    treeCoordinates.add(new Point(row,rightPointer));
-                } else {
-                    stopRight = true;
+                leftPointer++;
+            } else if(rightPointer > 0){
+                int treeValue = intList.get(row).get(rightPointer);
+                if (treeValue > maxValueRight) {
+                    treeCoordinates.add(new Point(rightPointer, row));
+                    maxValueRight = treeValue;
                 }
-            }
-
-
-            if (stopLeft && stopRight){
+                rightPointer--;
+            } else{
                 break;
             }
-
-
-            leftPointer++;
-            rightPointer--;
         }
     }
 
-    private static void calcCol(List<List<Integer>> intList, int row, List<Point>
-            treeCoordinates) {
-        boolean stopTop = false;
-        boolean stopBottom = false;
+    private static void calcCol(List<List<Integer>> intList, int row, Set<Point> treeCoordinates) {
+        int maxValueTop = -1;
+        int maxValueBottom = -1;
         int topPointer = 0;
         int bottomPointer = intList.size() - 1;
-        while (true) {
-            if (!stopTop) {
-
-                if (topPointer == 0) {
+        while(true){
+            if(topPointer < intList.size()){
+                int treeValue = intList.get(topPointer).get(row);
+                if(treeValue > maxValueTop){
                     treeCoordinates.add(new Point(row, topPointer));
+                    maxValueTop = treeValue;
                 }
-
-                if (row + 1 < intList.size() && intList.get(topPointer).get(row) < intList.get(topPointer).get(row + 1)) {
-                    treeCoordinates.add(new Point(row, topPointer+1));
-                } else {
-                    stopTop = true;
-                }
-            }
-
-            if (!stopBottom) {
-
-                if (bottomPointer == intList.size()-1) {
+                topPointer++;
+            } else if(bottomPointer > 0){
+                int treeValue = intList.get(bottomPointer).get(row);
+                if (treeValue > maxValueBottom) {
                     treeCoordinates.add(new Point(row, bottomPointer));
+                    maxValueBottom = treeValue;
                 }
-
-                if (row > 0 && intList.get(bottomPointer).get(row) < intList.get(bottomPointer-1).get(row)) {
-                    treeCoordinates.add(new Point(row, bottomPointer-1));
-                } else {
-                    stopBottom = true;
-                }
-            }
-
-
-            if (stopTop && stopBottom) {
+                bottomPointer--;
+            } else{
                 break;
             }
-
-
-            topPointer++;
-            bottomPointer--;
         }
     }
 
@@ -128,5 +96,4 @@ public class Day8 {
 
         return row;
     }
-
 }
