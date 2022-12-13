@@ -8,30 +8,27 @@ public class Day9 {
 
 
     private static Set<Point> markedTiles = new HashSet<>();
-    private static Point start = new Point(500, 500);
+    private static Point start = new Point(0, 4);
 
-    private static Point head = new Point(500,500);
-    private static Point tail = new Point(500,500);
+    private static Point head = new Point(0, 4);
+    private static Point tail = new Point(0, 4);
     private static List<List<Character>> grid = new ArrayList<>();
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner myReader = new Scanner(new File("src/main/inputDay9.txt"));
-        for (int i = 0; i < 1000; i++){
+        for (int i = 0; i < 5; i++){
             grid.add(new ArrayList<>());
-            for (int j = 0; j < 1000; j++){
+            for (int j = 0; j < 6; j++){
                 grid.get(i).add('.');
             }
         }
 
         markTile(tail);
-        //markTiles();
 
         while (myReader.hasNext()){
             var data = myReader.nextLine();
             ropePhysics(data);
 
-
-            var b = 5;
         }
 
         var result = markedTiles.size();
@@ -57,33 +54,26 @@ public class Day9 {
 
 
        if(dx > 1){
-           //grid.get(tail.y).set(tail.x, '#');
            tail.move(tail.x+1,tail.y+dy);
-           //grid.get(tail.y).set(tail.x, 'T');
        } else if(dx < -1){
-           //grid.get(tail.y).set(tail.x, '#');
            tail.move(tail.x-1,tail.y+dy);
-           //grid.get(tail.y).set(tail.x, 'T');
        }
 
        if(dy > 1){
-           //grid.get(tail.y).set(tail.x, '#');
            tail.move(tail.x+dx,tail.y+1);
-           //grid.get(tail.y).set(tail.x, 'T');
        } else if(dy < -1){
-           //grid.get(tail.y).set(tail.x, '#');
-
            tail.move(tail.x+dx,tail.y-1);
-           //grid.get(tail.y).set(tail.x, 'T');
        }
+
         markTile(tail);
-        //markTiles();
-        //printGrid();
+        printGrid();
     }
 
     private static void printGrid(){
         System.out.println("");
         System.out.println("");
+
+        markTiles();
 
         for (var c : grid){
             System.out.println(c);
@@ -113,18 +103,24 @@ public class Day9 {
 
 
     private static void markTile(Point tile){
-        Point p = new Point(tile);
-        if(!grid.get(tile.y).get(tile.x).equals('s'))
-            markedTiles.add(p);
+        markedTiles.add(new Point(tile));
     }
 
-    /*private static void markTiles(){
+    private static void markTiles(){
         grid.get(start.y).set(start.x, 's');
+
+        for (var c : grid){
+            for (int j = 0; j < grid.get(0).size(); j++){
+                c.set(j, '.');
+            }
+        }
 
         for (var tile : markedTiles){
             grid.get(tile.y).set(tile.x, '#');
         }
 
-    }*/
+        grid.get(head.y).set(head.x, 'H');
+        grid.get(tail.y).set(tail.x, 'T');
+    }
 
 }
