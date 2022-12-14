@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.security.KeyPair;
 import java.util.*;
 
 public class Day7 {
@@ -7,11 +8,20 @@ public class Day7 {
         File myObj = new File("src/main/inputDay7.txt");
         Scanner myReader = new Scanner(myObj);
 
-        Stack<String> dir = new Stack<>();
+
+        List<DirectoryTest> directories = new ArrayList<>();
+        DirectoryTest root = new DirectoryTest("/", null);
+        directories.add(root);
+
+        Stack<String> cmds = new Stack<>();
         while (myReader.hasNext()){
             var data = myReader.nextLine();
-            //var t = data.split();
+            cmds.add(data);
+
         }
+        Collections.reverse(cmds);
+
+
 
         var b = 5;
         /*
