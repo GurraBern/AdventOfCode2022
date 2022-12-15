@@ -7,17 +7,31 @@ import java.util.*;
 
 public class DirectoryTest {
 
-    private String directoryName;
+    public String directoryName;
     private DirectoryTest parentDirectory;
-    private List<DirectoryTest> childDirectories = new ArrayList<>();
-    private List<Dictionary<String, Integer>> files = new ArrayList<>();
+    public List<DirectoryTest> childDirectories = new ArrayList<>();
+    public List<Pair<String, Integer>> files = new ArrayList<>();
 
     public DirectoryTest(String directoryName, DirectoryTest parentDirectory){
         this.directoryName = directoryName;
         this.parentDirectory = parentDirectory;
     }
 
-    public void addFile(Dictionary<String, Integer> file){
+    public int getSize(){
+        int size = 0;
+        for(var file : files){
+            size += Integer.parseInt(String.valueOf(file.value));
+        }
+
+        for (var child : childDirectories){
+            var c = child.getSize();
+            size += c;
+        }
+
+        return size;
+    }
+
+    public void addFile(Pair<String, Integer> file){
         files.add(file);
     }
 
