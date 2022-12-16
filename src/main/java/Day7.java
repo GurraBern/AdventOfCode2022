@@ -42,7 +42,12 @@ public class Day7 {
             current.addDirectory(newDir);
             //current = newDir;
         } else if(splitCmd[1].equals("cd")){
-            current = findDirectory(splitCmd[2]);
+            if(splitCmd[2].equals("..") && !current.directoryName.equals("/")) {
+                current = current.getParentDirectory();
+            } else {
+                if(findDirectory(splitCmd[2]) != null)
+                    current = findDirectory(splitCmd[2]);
+            }
         } else if(splitCmd[0].matches(".*\\d.*")){
             var fileSize = splitCmd[0];
             var fileName = splitCmd[1];

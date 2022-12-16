@@ -17,6 +17,10 @@ public class DirectoryTest {
         this.parentDirectory = parentDirectory;
     }
 
+    public DirectoryTest getParentDirectory() {
+        return parentDirectory;
+    }
+
     public int getSize(){
         int size = 0;
         for(var file : files){
